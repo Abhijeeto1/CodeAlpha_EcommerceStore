@@ -1,0 +1,66 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>ShopEase | Online Shopping</title>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body>
+
+<header class="navbar">
+
+    <div class="logo">
+        <a href="/" style="text-decoration:none; color:inherit;">
+            ShopEase.
+        </a>
+    </div>
+
+    <nav>
+        <a href="/">Home</a>
+        <a href="/#categories">Categories</a>
+        <a href="/#products">Products</a>
+        <a href="/#footer">Contact</a>
+    </nav>
+
+    <div class="nav-actions">
+
+        {% if user.is_authenticated %}
+            <span class="welcome-user">
+                Hi, {{ user.username }}
+            </span>
+
+            <form method="POST" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button type="submit" class="logout-btn">
+                    Logout
+                </button>
+            </form>
+        {% else %}
+            <a href="/accounts/login/">Login</a>
+        {% endif %}
+
+        <a href="{% url 'cart' %}">🛒 Cart</a>
+
+    </div>
+
+</header>
+
+<main>
+    {% block content %}
+    {% endblock %}
+</main>
+
+<footer id="footer">
+    <h2>ShopEase.</h2>
+    <p>Your one-stop destination for online shopping.</p>
+    <p>© 2026 ShopEase. All rights reserved.</p>
+</footer>
+
+</body>
+</html>

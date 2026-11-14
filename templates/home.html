@@ -1,0 +1,134 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<section class="hero">
+    <div class="hero-content">
+        <span>WELCOME TO SHOPEASE</span>
+
+        <h1>Discover Products<br>You Will Love.</h1>
+
+        <p>
+            Explore amazing products at affordable prices.
+            Enjoy a simple and convenient shopping experience.
+        </p>
+
+        <a href="#products" class="shop-btn">
+            Shop Now →
+        </a>
+    </div>
+</section>
+
+<section class="categories" id="categories">
+    <h2>Shop by Category</h2>
+
+    <div class="category-grid">
+        <div class="category">📱<h3>Electronics</h3></div>
+        <div class="category">👕<h3>Fashion</h3></div>
+        <div class="category">⌚<h3>Accessories</h3></div>
+        <div class="category">🏠<h3>Home & Living</h3></div>
+    </div>
+</section>
+
+<section class="products" id="products">
+
+    <h2>Featured Products</h2>
+
+<form method="GET" action="{% url 'home' %}" class="search-form">
+    <input
+        type="text"
+        name="search"
+        placeholder="Search products..."
+        value="{{ search_query }}"
+    >
+
+    <button type="submit">Search</button>
+</form>
+
+
+<form method="GET" action="{% url 'home' %}" class="search-form">
+
+    <input
+        type="text"
+        name="search"
+        placeholder="Search products..."
+        value="{{ search_query }}"
+    >
+
+    <select name="category">
+        <option value="">All Categories</option>
+
+        <option value="Electronics"
+            {% if selected_category == 'Electronics' %}selected{% endif %}>
+            Electronics
+        </option>
+
+        <option value="Fashion"
+            {% if selected_category == 'Fashion' %}selected{% endif %}>
+            Fashion
+        </option>
+
+        <option value="Accessories"
+            {% if selected_category == 'Accessories' %}selected{% endif %}>
+            Accessories
+        </option>
+
+        <option value="Home & Living"
+            {% if selected_category == 'Home & Living' %}selected{% endif %}>
+            Home & Living
+        </option>
+    </select>
+
+    <button type="submit">Search</button>
+
+    <a href="{% url 'home' %}">Clear</a>
+
+</form>
+
+
+
+    <div class="product-grid">
+
+        {% for product in products %}
+
+        <div class="product-card">
+
+            {% if product.image_url %}
+                <img src="{{ product.image_url }}"
+                     alt="{{ product.name }}">
+            {% else %}
+                <img src="https://placehold.co/400x300?text=Product"
+                     alt="{{ product.name }}">
+            {% endif %}
+
+           <h3>
+    <a href="{% url 'product_detail' product.pk %}">
+        {{ product.name }}
+    </a>
+</h3>
+
+            <p>₹{{ product.price }}</p>
+
+            <p>Available Stock: {{ product.stock }}</p>
+
+           <form method="POST"
+      action="{% url 'add_to_cart' product.pk %}">
+
+    {% csrf_token %}
+
+    <button type="submit">Add to Cart</button>
+
+</form>
+        </div>
+
+        {% empty %}
+
+        <p>No products available yet.</p>
+
+        {% endfor %}
+
+    </div>
+
+</section>
+
+{% endblock %}

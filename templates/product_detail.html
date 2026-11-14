@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<section class="products">
+
+    <div class="product-card">
+
+        {% if product.image_url %}
+            <img src="{{ product.image_url }}"
+                 alt="{{ product.name }}">
+        {% else %}
+            <img src="https://placehold.co/500x350?text=Product"
+                 alt="{{ product.name }}">
+        {% endif %}
+
+        <h2>{{ product.name }}</h2>
+
+        <h3>₹{{ product.price }}</h3>
+
+        <p>{{ product.description }}</p>
+
+        <p>Available Stock: {{ product.stock }}</p>
+
+        <form method="POST"
+      action="{% url 'add_to_cart' product.pk %}">
+
+    {% csrf_token %}
+
+    <button type="submit">Add to Cart</button>
+
+</form>
+
+        <br><br>
+
+        <a href="/">← Back to Shopping</a>
+
+    </div>
+
+</section>
+
+{% endblock %}
